@@ -7,18 +7,20 @@ class securedDB:
         self.dataBase = DB.DB(fileName)
         self.lock=threading.Lock()
         self.sem = threading.Semaphore(10)
-        self.writingStatus=True
 
     def write(self,key,value):
         lock.acquire()
-        self.writingStatus=False
-        self.dataBase.write(key,value)
-        self.writingStatus=True
+        data = self.dataBase.write(key,value)
         lock.release()
+        return data
 
     def read(self,key):
-        while not self.writingStatus:
-            pass
+        lock.acquire()
+        lock.release()
+        sem.acquire()
+        data = self.dataBase.read(key)
+        sem.release()
+        return data
         
             
         
