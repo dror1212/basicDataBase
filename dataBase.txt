@@ -1,5 +1,8 @@
 (dp0
-I1
-S'xxx'
+S'y'
 p1
+I123
+sI1
+S'xxx'
+p2
 s.

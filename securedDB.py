@@ -1,5 +1,6 @@
 import DB
 import threading
+import time #add delay to the functions to show that it is really waiting
 
 class securedDB:
     def __init__(self,fileName):
@@ -11,7 +12,10 @@ class securedDB:
         self.lock.acquire()
         for i in xrange(0,10):
             self.sem.acquire()
+        print "wait before releaseing to create delay" ####to check if he really waits####
         data = self.dataBase.write(key,value)
+        print data
+        time.sleep(1) ####to check if he really waits####
         for i in xrange(0,10):
             self.sem.release()
         self.lock.release()
@@ -19,7 +23,10 @@ class securedDB:
 
     def read(self,key):
         self.sem.acquire()
+        print "wait before releaseing to create delay" ####to check if he really waits####
         data = self.dataBase.read(key)
+        print data
+        time.sleep(1) ####to check if he really waits####
         self.sem.release()
         return data
 
@@ -42,6 +49,9 @@ class securedDB:
             self.sem.release()
         self.lock.release()
         return data
+
+    def clear(self):
+        self.dataBase.clear()
             
         
         
