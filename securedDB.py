@@ -1,6 +1,5 @@
 import DB
 import threading
-import mutex
 
 class securedDB:
     def __init__(self,fileName):
@@ -9,19 +8,40 @@ class securedDB:
         self.sem = threading.Semaphore(10)
 
     def write(self,key,value):
-        lock.acquire()
+        self.lock.acquire()
+        for i in xrange(0,10):
+            self.sem.acquire()
         data = self.dataBase.write(key,value)
-        lock.release()
+        for i in xrange(0,10):
+            self.sem.release()
+        self.lock.release()
         return data
 
     def read(self,key):
-        lock.acquire()
-        lock.release()
-        sem.acquire()
+        self.sem.acquire()
         data = self.dataBase.read(key)
-        sem.release()
+        self.sem.release()
         return data
-        
+
+    def update(self,key,value):
+        self.lock.acquire()
+        for i in xrange(0,10):
+            self.sem.acquire()
+        data = self.dataBase.update(key,value)
+        for i in xrange(0,10):
+            self.sem.release()
+        self.lock.release()
+        return data
+
+    def delete(self,key):
+        self.lock.acquire()
+        for i in xrange(0,10):
+            self.sem.acquire()
+        data = self.dataBase.delete(key)
+        for i in xrange(0,10):
+            self.sem.release()
+        self.lock.release()
+        return data
             
         
         
