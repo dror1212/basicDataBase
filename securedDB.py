@@ -15,14 +15,16 @@ class securedDB:
         print "wait before releaseing to create delay" ####to check if he really waits####
         data = self.dataBase.write(key,value)
         print data
-        time.sleep(1) ####to check if he really waits####
+        time.sleep(2) ####to check if he really waits####
         for i in xrange(0,10):
             self.sem.release()
         self.lock.release()
         return data
 
     def read(self,key):
+        self.lock.acquire()
         self.sem.acquire()
+        self.lock.release()
         print "wait before releaseing to create delay" ####to check if he really waits####
         data = self.dataBase.read(key)
         print data
@@ -34,7 +36,9 @@ class securedDB:
         self.lock.acquire()
         for i in xrange(0,10):
             self.sem.acquire()
+        print "wait before releaseing to create delay" ####to check if he really waits####  
         data = self.dataBase.update(key,value)
+        print data
         for i in xrange(0,10):
             self.sem.release()
         self.lock.release()
@@ -44,7 +48,9 @@ class securedDB:
         self.lock.acquire()
         for i in xrange(0,10):
             self.sem.acquire()
+        print "wait before releaseing to create delay" ####to check if he really waits####
         data = self.dataBase.delete(key)
+        print data
         for i in xrange(0,10):
             self.sem.release()
         self.lock.release()
